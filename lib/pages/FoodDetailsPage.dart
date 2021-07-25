@@ -54,7 +54,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                 
               ),
               Text(
-                'Veggie tomato mix',
+                'Veggie  mix',
                 style: TextStyle(fontSize: 28),
               ),
               SizedBox(
