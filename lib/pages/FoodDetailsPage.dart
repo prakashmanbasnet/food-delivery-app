@@ -61,7 +61,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                 height: 10,
               ),
               Text(
-                'N1,900',
+                'N1,90',
                 style: TextStyle(color: Color3, fontSize: 22),
               ),
               SizedBox(
