@@ -103,22 +103,27 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               SizedBox(
                 height: 45,
               ),
-              Container(
-                width: double.infinity,
-                height: 60,
-                decoration:
-                BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: Colors.deepOrange
-                  ),
-                child: Center(
-                  child: Text('Add to cart',
-                  style: TextStyle(
-                    color: Color2,
-                    fontSize: 17,
-                  ),
-                  ),),
-
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, '/cartPage');
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration:
+                  BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    color: Colors.deepOrange
+                    ),
+                  child: Center(
+                    child: Text('Add to cart',
+                    style: TextStyle(
+                      color: Color2,
+                      fontSize: 17,
+                    ),
+                    ),),
+              
+                ),
               ),
             ], 
               )
