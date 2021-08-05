@@ -7,13 +7,23 @@ import '../method/foodContainerHome.dart';
 import '../method/bottomNavigationBar.dart';
 import '../pages/SearchPage.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  bool foodSelected = true;
+  bool drinkSelected = true;
+  bool snackSelected = true;
+
+  int _selectedIndex = 0;
+  _selectedindex(index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
@@ -136,6 +146,24 @@ class _HomePageState extends State<HomePage> {
                     fontFamily: 'Roboto',
                     fontSize: 18,
                     fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/upload');
+                },
+                child: Text(
+                  'Add food menu',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+                style: ElevatedButton.styleFrom(
+                primary: Colors.deepOrange
+                ),
               )
             ],
           ),
@@ -183,15 +211,15 @@ class _HomePageState extends State<HomePage> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: IconButton(
-                        onPressed: (){
-                           showSearch(context: context, delegate: SearchPage());
+                        onPressed: () {
+                          showSearch(context: context, delegate: SearchPage());
                         },
                         icon: Icon(Icons.search),
                       ),
                     ),
                   ),
                   //SizedBox(width: 70,),
-            
+
                   Padding(
                     padding: const EdgeInsets.only(left: 60.0),
                     child: Align(
@@ -205,28 +233,51 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
-                padding: EdgeInsets.only(top: 10),
-                height: 40,
-                width: deviceWidth * 0.80,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: foodCategory.length,
-                    itemBuilder: (context, int index) {
-                      return Column(
-                        children: [
-                          Text(foodCategory[index]['itemName']),
-                          Container(
-                            margin:
-                                EdgeInsets.only(top: 4, left: 20, right: 20),
-                            height: 3,
-                            width: 70,
-                            decoration: BoxDecoration(color: Colors.deepOrange),
+              // color: Colors.blue,
+              //padding: EdgeInsets.only(top: 10),
+              height: 40,
+              width: deviceWidth * 0.80,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: foodCategory.length,
+                  itemBuilder: (context, int index) {
+                    return Row(
+                      children: [
+                        Container(
+                          height: 70,
+                          width: 90,
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedindex(index);
+                                    });
+                                  },
+                                  child: Text(foodCategory[index]['itemName'])),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              if (_selectedIndex != null &&
+                                  _selectedIndex == index)
+                                Container(
+                                  height: 3,
+                                  width: 70,
+                                  decoration:
+                                      BoxDecoration(color: Colors.deepOrange),
+                                ),
+                            ],
                           ),
-                          SizedBox(width: 15),
-                        ],
-                      );
-                    })),
+                        ),
+                        SizedBox(width: 15),
+                      ],
+                    );
+                  }),
+            ),
             foodContainerHomePage(deviceHeight, deviceWidth)
           ],
         ),

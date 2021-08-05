@@ -26,14 +26,15 @@ class MyApp extends StatelessWidget {
         primaryColor:  Color(0xfff2f2f2),
         scaffoldBackgroundColor: Color(0xfff2f2f2),
       ),
-      home:LoginPage(),
+      home:HomePage(),
       
       routes: {
          '/home':(context)=>HomePage(),
          '/profile':(context)=>Profilepage(),
          '/foodDetails':(context)=>FoodDetailsPage(),
          '/cartPage':(context)=>CartPage(),
-         '/payment':(context)=>Paymentpage()
+         '/payment':(context)=>Paymentpage(),
+         '/upload':(context)=>UploadFoodImage(),
         
       },
     );
