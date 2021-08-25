@@ -17,27 +17,27 @@ class _UploadFoodImageState extends State<UploadFoodImage> {
   final TextEditingController foodNameController = TextEditingController();
   final TextEditingController foodPriceController = TextEditingController();
 
-  File? imageFile;
+  File imageFile;
   var uploadImageUrl;
   final picker = ImagePicker();
-  UploadTask? uploadTask;
+  UploadTask uploadTask;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var character = foodType[0];
 
   Future pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
-      imageFile = File(pickedFile!.path);
+      imageFile = File(pickedFile.path);
     });
   }
 
   Future uploadImageToFirebase(photo) async {
     if (photo == null) return;
 
-    String fileName = basename(photo!.path);
+    String fileName = basename(photo.path);
     Reference firbaseStorageRef =
         FirebaseStorage.instance.ref().child('uploads/$fileName');
-    UploadTask uploadTask = firbaseStorageRef.putFile(photo!);
+    UploadTask uploadTask = firbaseStorageRef.putFile(photo);
 
     TaskSnapshot taskSnapshot = await uploadTask;
     var uploadImageUrl = await taskSnapshot.ref.getDownloadURL();
@@ -132,7 +132,7 @@ class _UploadFoodImageState extends State<UploadFoodImage> {
   @override
   Widget build(BuildContext context) {
     var fileName =
-        imageFile != null ? basename(imageFile!.path) : 'No file selected';
+        imageFile != null ? basename(imageFile.path) : 'No file selected';
     return Scaffold(
       body: Form(
         child: SingleChildScrollView(
@@ -171,7 +171,7 @@ class _UploadFoodImageState extends State<UploadFoodImage> {
                       groupValue: character,
                       onChanged: (value) {
                         setState(() {
-                          character = value!.toString();
+                          character = value.toString();
                         });
                       },
                     ),
@@ -183,7 +183,7 @@ class _UploadFoodImageState extends State<UploadFoodImage> {
                       groupValue: character,
                       onChanged: (value) {
                         setState(() {
-                          character = value!.toString();
+                          character = value.toString();
                         });
                       },
                     ),
@@ -195,7 +195,7 @@ class _UploadFoodImageState extends State<UploadFoodImage> {
                       groupValue: character,
                       onChanged: (value) {
                         setState(() {
-                          character = value!.toString();
+                          character = value.toString();
                         });
                       },
                     ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodapp/customClass/cateogoryClass.dart';
-import 'package:foodapp/pages/SearchPage.dart';
-import 'package:foodapp/pages/profilePage.dart';
-import '../pages/profilePage.dart';
-import '../method/foodContainerHome.dart';
-import '../method/bottomNavigationBar.dart';
-import '../pages/SearchPage.dart';
+
+
+
+import 'widget/foodContainerHome.dart';
+import 'widget/bottomNavigationBar.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -211,9 +210,9 @@ class _HomePageState extends State<HomePage> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: IconButton(
-                        onPressed: () {
-                          showSearch(context: context, delegate: SearchPage());
-                        },
+                        // onPressed: () {
+                        //   showSearch(context: context, delegate: SearchPage());
+                        // },
                         icon: Icon(Icons.search),
                       ),
                     ),
@@ -243,7 +242,7 @@ class _HomePageState extends State<HomePage> {
               width: deviceWidth * 0.80,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: foodCategory.length,
+                  itemCount:3,
                   itemBuilder: (context, int index) {
                     return Row(
                       children: [
@@ -258,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                                       _selectedindex(index);
                                     });
                                   },
-                                  child: Text(foodCategory[index]['itemName'])),
+                                  child: Text('food')),
                               SizedBox(
                                 height: 7,
                               ),

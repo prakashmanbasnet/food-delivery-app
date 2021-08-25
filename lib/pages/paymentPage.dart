@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodapp/constant/constant.dart';
 
 class Paymentpage extends StatefulWidget {
-  const Paymentpage({Key? key}) : super(key: key);
+  
 
   @override
   _PaymentpageState createState() => _PaymentpageState();

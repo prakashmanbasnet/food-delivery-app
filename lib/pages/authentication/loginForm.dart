@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
+import 'package:foodapp/constant/controllers.dart';
 
 // ignore: must_be_immutable
 class LoginForm extends StatefulWidget {
   Function(bool isLogin) loginSignup;
-  LoginForm({required this.isLogin, required this.loginSignup});
+  LoginForm({this.isLogin, this.loginSignup});
   bool isLogin;
 
   @override
@@ -14,58 +14,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-
-  TextEditingController emailcontroller=TextEditingController();
-  TextEditingController usernamecontroller=TextEditingController();
-  TextEditingController passwordcontroller=TextEditingController();
   final formkey = GlobalKey<FormState>();
-  final auth=FirebaseAuth.instance;
-  String email = '';
-  String username = '';
-  String password = '';
-
-  dynamic trySubmit() {
-    if (formkey.currentState != null) {
-      final isValid = formkey.currentState!.validate();
-       FocusScope.of(context).unfocus();
-      if (isValid) {
-        formkey.currentState!.save();
-        submitButton(email.trim(),username.trim(),password.trim());
-         
-      }
-    }
-   
-  }
-  
-  
-  void submitButton(email,username,password)async{
-    try{
-       UserCredential authResult;
-    if(widget.isLogin){
-       authResult=await auth.signInWithEmailAndPassword(email: email, password: password);
-    }else{
-      authResult=await auth.createUserWithEmailAndPassword(email: email, password: password);
-    }
-    Navigator.pushNamed(context, '/home');
-    } catch(e){
-       showDialog(context: context,
-        builder: (BuildContext ctc){
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text(e.toString()),
-          );
-        });
-      
-       
-    }
-      emailcontroller.clear();
-         passwordcontroller.clear();
-         usernamecontroller.clear();
-    }
-   
-  
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,66 +22,59 @@ class _LoginFormState extends State<LoginForm> {
     var deviceWidth = MediaQuery.of(context).size.width;
     return Material(
         child: Container(
-            color: Color(0xfff2f2f2),
-            height: deviceHeight * 0.50,
-            width: deviceWidth * 0.80,
-            child: SingleChildScrollView(
+      color: Color(0xfff2f2f2),
+      height: deviceHeight * 0.50,
+      width: deviceWidth * 0.80,
+      child: SingleChildScrollView(
         child: Form(
           key: formkey,
           child: Column(
             children: [
-           
               TextFormField(
-                controller: emailcontroller,
-                  key: ValueKey('email'),
-                validator: (value){
-                  if(value!.isEmpty||!value.contains("@")){
+                controller: authController.email,
+                key: ValueKey('email'),
+                validator: (value) {
+                  if (value.isEmpty || !value.contains("@")) {
                     return 'Enter valid email address';
-                }
-                return null;
+                  }
+                  return null;
                 },
-                onSaved: (value){
-                  if(value!=null)
-                  email=value;
-                },
+                // onSaved: (value){
+                //   if(value!=null)
+                //   email=value;
+                // },
                 decoration: InputDecoration(
                     labelText: 'Email Adress',
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black87))),
               ),
-                 if(!widget.isLogin)
+              if (!widget.isLogin)
+                TextFormField(
+                  controller: authController.username,
+                  key: ValueKey('username'),
+                  validator: (value) {
+                    if (value != null) {
+                      if (value.isEmpty || value.length < 5) {
+                        return 'Please enter username of more length';
+                      }
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      labelText: 'Username',
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black87))),
+                ),
               TextFormField(
-                controller: usernamecontroller,
-                key: ValueKey('username'),
-                validator: (value){
-                  if(value!=null){
-                    if(value.isEmpty||value.length<5){
-                      return 'Please enter username of more length';
-                  }
-                }
-                return null;
-                },
-                onSaved: (value){
-                  username=value!;
-                },
-                decoration: InputDecoration(
-                    labelText: 'Username',
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black87))),
-              ),
-              TextFormField(
-                controller: passwordcontroller,
-                  key: ValueKey('password'),
-                  validator: (value){
-                  if(value!=null){
-                    if(value.isEmpty||value.length<5){
+                controller: authController.password,
+                key: ValueKey('password'),
+                validator: (value) {
+                  if (value != null) {
+                    if (value.isEmpty || value.length < 5) {
                       return ' enter password of more than 5 character';
+                    }
                   }
-                }
-                return null;
-                },
-                onSaved: (value){
-                  password=value!;
+                  return null;
                 },
                 obscureText: true,
                 decoration: InputDecoration(
@@ -161,8 +103,17 @@ class _LoginFormState extends State<LoginForm> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: trySubmit,
-                   
+                  onPressed: () {
+                    if (widget.isLogin) {
+                      print('signin pressed');
+                          print('signin pressed');
+                      authController.signIn();
+                    } else {
+                          print('signup pressed');
+                              print('signup pressed');
+                      authController.signUp();
+                    }
+                  },
                   style: ElevatedButton.styleFrom(primary: Colors.deepOrange),
                   child: Text(widget.isLogin ? 'Login' : 'sign-up'),
                 ),
@@ -194,7 +145,7 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-            ),
-          ));
+      ),
+    ));
   }
 }

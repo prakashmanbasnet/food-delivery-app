@@ -1,24 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import '../customClass/cateogoryClass.dart';
+import 'package:foodapp/constant/controllers.dart';
+import 'package:foodapp/pages/FoodDetailsPage.dart';
+import 'package:get/get.dart';
+
 
 Container foodContainerHomePage(double deviceHeight, double deviceWidth) {
   return Container(
     margin: EdgeInsets.only(top: 20),
     height: deviceHeight * 0.40,
     width: deviceWidth * 0.80,
-    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection('food').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error=${snapshot.error}');
-          }
-
-          if (snapshot.hasData) {
-            final docs = snapshot.data!.docs;
-            return ListView.builder(
+    child: Obx((){
+          return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: docs.length,
+                itemCount: foodController.foods.length,
                 itemBuilder: (context, int index) {
                   return Container(
                     width: deviceWidth * 0.40,
@@ -31,12 +26,16 @@ Container foodContainerHomePage(double deviceHeight, double deviceWidth) {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/foodDetails');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context){
+                                return FoodDetailsPage(index:index,docs:foodController.foods[index]);
+                              }));
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 15),
-                            child: Image.network(
-                              docs[index]['foodImageurl'],
+                            child:Image.network(
+                             foodController.foods[index].image,
                               //fit: BoxFit.contain,
                               height: deviceHeight * 0.25,
                               width: deviceHeight * 0.20,
@@ -44,7 +43,7 @@ Container foodContainerHomePage(double deviceHeight, double deviceWidth) {
                           ),
                         ),
                         Text(
-                          docs[index]['foodName'],
+                         foodController.foods[index].name,
                           style: TextStyle(
                             color: Colors.black87,
                           ),
@@ -65,7 +64,7 @@ Container foodContainerHomePage(double deviceHeight, double deviceWidth) {
                                 width: 5,
                               ),
                               Text(
-                                docs[index]['foodPrice'].toString(),
+                               foodController.foods[index].price,
                                 style: TextStyle(
                                   color: Colors.red,
                                 ),
@@ -77,8 +76,7 @@ Container foodContainerHomePage(double deviceHeight, double deviceWidth) {
                     ),
                   );
                 });
-          }
-          return Text('hello');
-        }),
+    }) 
+        
   );
 }

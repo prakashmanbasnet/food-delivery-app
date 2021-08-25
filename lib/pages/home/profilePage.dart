@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../constant/constant.dart';
+import '../../constant/constant.dart';
 
 class Profilepage extends StatefulWidget {
   @override

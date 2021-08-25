@@ -7,7 +7,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  var itemNumber = 5;
+  var itemNumber = 1;
 
   void addFoodNumber() {
     itemNumber = itemNumber + 1;
@@ -21,6 +21,11 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
     var deviceWidth = MediaQuery.of(context).size.width;
+    final arguments=ModalRoute.of(context).settings.arguments as Map;
+    print('final final final value value');
+    print(arguments);
+  var foodPrice=arguments['foodPrice']+itemNumber.toString();
+  print(foodPrice);
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -52,17 +57,19 @@ class _CartPageState extends State<CartPage> {
                     // physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     //scrollDirection: Axis.horizontal,
-                    itemCount: 2,
+                    itemCount: 1,
                     itemBuilder: (context, int index) {
                       return Card(
                         child: ListTile(
-                          leading: Image.asset(
-                            'assets/image/food1.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          title: Text('Momo'),
-                          subtitle: Text('Price'),
+                          leading: Image.network(
+                      arguments['foodImageUrl'],
+                      //fit: BoxFit.contain,
+                      height: 50,
+                      width: 50,
+                    ),
+                   //leading: Text('momo picture'),
+                          title: Text(arguments['foodName']),
+                          subtitle: Text(foodPrice),
                           trailing: Container(
                             // padding: EdgeInsets.all(0),
                             height: 30,
